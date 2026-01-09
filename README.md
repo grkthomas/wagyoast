@@ -1,6 +1,8 @@
 
 # WagtailYoast (Wagtail 7.1.2) – Integration Guide
 
+![Preview](WagtailYoast.png)
+
 This repository contains a small Wagtail project plus a local app named `wagtailyoast` that adds a Yoast-style SEO + readability analysis panel inside the Wagtail page editor.
 
 The analysis is powered by the `yoastseo` JavaScript library. It works by:
