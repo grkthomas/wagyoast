@@ -7,6 +7,13 @@
 <main class="main">
     <div class="main-text">
         <h1>{{ page.title }}</h1>
+        {% if page.search_description %}
+            <p class="lede">{{ page.search_description }}</p>
+        {% endif %}
+
+        {% if page.body %}
+            <div class="richtext">{{ page.body|safe }}</div>
+        {% endif %}
     </div>
 </main>
 {% endblock %}
