@@ -5,6 +5,8 @@
 
 This repository contains a small Wagtail project plus a local app named `wagtailyoast` that adds a Yoast-style SEO + readability analysis panel inside the Wagtail page editor.
 
+This repository is an attempt to update the existing project at https://github.com/Aleksi44/wagtailyoast.
+
 The analysis is powered by the `yoastseo` JavaScript library. It works by:
 
 1. Posting the current edit form to the Wagtail preview endpoint
@@ -233,6 +235,7 @@ After changing the model:
 python manage.py makemigrations
 python manage.py migrate
 ```
+This example uses SQLite
 
 ---
 
