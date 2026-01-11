@@ -10,7 +10,13 @@ export default class Panel extends WithContext {
    */
   constructor(context) {
     super(context);
-    this.workerUrl = `${this.baseUrl}${this.context.staticUrl}wagtailyoast/dist/js/yoastworker${this.context.version}.js`;
+    // The Yoast analysis runs in a WebWorker. The worker script must be fetched by URL, so we build
+    // a fully-qualified URL that works both when STATIC_URL is relative ("/static/") and when it's
+    // absolute (e.g. served from a CDN). We also add an optional ?v=... cache-buster.
+    const versionSuffix = this.context.version ? `?v=${encodeURIComponent(this.context.version)}` : '';
+    const staticUrl = this.context.staticUrl || '/static/';
+    const staticBase = /^https?:\/\//.test(staticUrl) ? staticUrl : `${this.baseUrl}${staticUrl}`;
+    this.workerUrl = `${staticBase}wagtailyoast/dist/js/yoastworker.js${versionSuffix}`;
     this.worker = new AnalysisWorkerWrapper(createWorker(this.workerUrl));
 
     this._syncDebounced = Panel.debounce(() => this.syncPanel(), 300);

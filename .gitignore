@@ -32,7 +32,7 @@ htmlcov/
 
 # Packaging
 build/
-dist/
+# dist/
 *.egg-info/
 
 # Editors / IDEs

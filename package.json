@@ -6,9 +6,10 @@
     "yoastseo": "^1.91.0"
   },
   "devDependencies": {
-    "esbuild-wasm": "^0.20.2",
+    "esbuild": "^0.20.2",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
-    "@esbuild-plugins/node-modules-polyfill": "^0.2.2"
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "sass": "^1.74.1"
   },
   "scripts": {
     "build:yoast": "node ./wagtailyoast/build/build-yoast.mjs"

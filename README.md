@@ -68,7 +68,9 @@ The Yoast analysis runs in the browser, so we bundle JavaScript assets for the W
 `package.json` dependencies:
 
 - Runtime: `yoastseo`
-- Dev/build: `esbuild-wasm`, `@esbuild-plugins/node-globals-polyfill`, `@esbuild-plugins/node-modules-polyfill`
+- Dev/build: `esbuild`, `sass`, `@esbuild-plugins/node-globals-polyfill`, `@esbuild-plugins/node-modules-polyfill`
+
+Important: **Node is only required to (re)build these assets.** For a “copy/paste into any Wagtail project” workflow, commit/copy the generated `wagtailyoast/static/wagtailyoast/dist/` files and you do not need `node_modules` at runtime.
 
 Install + build:
 
@@ -81,6 +83,8 @@ Output:
 
 - `wagtailyoast/static/wagtailyoast/dist/js/yoastanalysis.js`
 - `wagtailyoast/static/wagtailyoast/dist/js/yoastworker.js`
+
+The editor hook loads these unversioned filenames and uses `?v=...` for cache-busting when a package version is available.
 
 You must re-run `npm run build:yoast` whenever:
 
