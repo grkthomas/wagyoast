@@ -25,6 +25,42 @@ export default class ResultContainers {
     if (errors) errors.innerHTML = '';
   }
 
+  static resultScore(result) {
+    return `<span class="yoast-score-value"> <span>${result.score}</span> <span>/</span> <span>10</span> </span>`;
+  }
+
+  static ensureStylesheet() {
+    const existing = document.querySelector(
+      'link#wagtailyoast-styles, link[href*="wagtailyoast/dist/css/styles.css"]',
+    );
+    if (existing) return;
+
+    const context = window.__WAGTAILYOAST_CONTEXT__ || {};
+    const versionSuffix = context.version ? `?v=${encodeURIComponent(context.version)}` : '';
+    const staticUrl = context.staticUrl || '/static/';
+
+    // Use the browser to resolve relative/absolute STATIC_URL correctly.
+    let base;
+    try {
+      base = new URL(staticUrl, window.location.origin).toString();
+    } catch {
+      base = '/static/';
+    }
+
+    const href = `${base}wagtailyoast/dist/css/styles.css${versionSuffix}`;
+
+    const link = document.createElement('link');
+    link.id = 'wagtailyoast-styles';
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = href;
+
+    const head = document.head || document.getElementsByTagName('head')[0];
+    if (head) {
+      head.insertBefore(link, head.firstChild);
+    }
+  }
+
   /**
    * Get HTML icon if success or error according to the score
    *
@@ -100,6 +136,8 @@ export default class ResultContainers {
    * @return {void}
    */
   sync() {
+    ResultContainers.ensureStylesheet();
+
     // Clean containers
     ResultContainers.clear(this.readabilityContainer);
     ResultContainers.clear(this.seoContainer);

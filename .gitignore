@@ -21,6 +21,7 @@ ENV/
 local_settings.py
 media/
 staticfiles/
+/static/
 
 # Test / coverage / tooling caches
 .pytest_cache/

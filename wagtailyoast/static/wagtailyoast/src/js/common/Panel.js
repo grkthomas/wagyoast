@@ -10,6 +10,11 @@ export default class Panel extends WithContext {
    */
   constructor(context) {
     super(context);
+
+    // Expose context for other modules that may need to resolve static asset URLs.
+    // (e.g. injecting CSS as a fallback when hooks are not present)
+    window.__WAGTAILYOAST_CONTEXT__ = this.context;
+
     // The Yoast analysis runs in a WebWorker. The worker script must be fetched by URL, so we build
     // a fully-qualified URL that works both when STATIC_URL is relative ("/static/") and when it's
     // absolute (e.g. served from a CDN). We also add an optional ?v=... cache-buster.
