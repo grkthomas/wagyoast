@@ -1,0 +1,248 @@
+{
+  "result": {
+    "readability": {
+      "results": [
+        {
+          "_hasScore": true,
+          "_identifier": "fleschReadingEase",
+          "_hasMarks": false,
+          "score": 3,
+          "text": "<a href='https://yoa.st/34r' target='_blank'>Flesch Reading Ease</a>: The copy scores 41.1 in the test, which is considered difficult to read. <a href='https://yoa.st/34s' target='_blank'>Try to make shorter sentences, using less difficult words to improve readability</a>.",
+          "marks": []
+        },
+        {
+          "_hasScore": true,
+          "_identifier": "subheadingsTooLong",
+          "_hasMarks": false,
+          "score": 9,
+          "text": "<a href='https://yoa.st/34x' target='_blank'>Subheading distribution</a>: Great job!",
+          "marks": []
+        },
+        {
+          "_hasScore": true,
+          "_identifier": "textParagraphTooLong",
+          "_hasMarks": false,
+          "score": 9,
+          "text": "<a href='https://yoa.st/35d' target='_blank'>Paragraph length</a>: None of the paragraphs are too long. Great job!",
+          "marks": []
+        },
+        {
+          "_hasScore": true,
+          "_identifier": "textSentenceLength",
+          "_hasMarks": false,
+          "score": 9,
+          "text": "<a href='https://yoa.st/34v' target='_blank'>Sentence length</a>: Great!",
+          "marks": []
+        },
+        {
+          "_hasScore": true,
+          "_identifier": "textTransitionWords",
+          "_hasMarks": true,
+          "score": 3,
+          "text": "<a href='https://yoa.st/34z' target='_blank'>Transition words</a>: Only 2.3% of the sentences contain transition words, which is not enough. <a href='https://yoa.st/35a' target='_blank'>Use more of them</a>.",
+          "marks": [
+            {
+              "_properties": {
+                "original": "Although Django provides a solid foundation, it does not handle SEO automatically.",
+                "marked": "<yoastmark class='yoast-text-mark'>Although Django provides a solid foundation, it does not handle SEO automatically.</yoastmark>"
+              }
+            },
+            {
+              "_properties": {
+                "original": "By following these best practices, you can build search-engine-friendly Django websites that perform well and scale effectively.",
+                "marked": "<yoastmark class='yoast-text-mark'>By following these best practices, you can build search-engine-friendly Django websites that perform well and scale effectively.</yoastmark>"
+              }
+            }
+          ]
+        },
+        {
+          "_hasScore": true,
+          "_identifier": "passiveVoice",
+          "_hasMarks": false,
+          "score": 9,
+          "text": "<a href='https://yoa.st/34t' target='_blank'>Passive voice</a>: You're using enough active voice. That's great!",
+          "marks": []
+        },
+        {
+          "_hasScore": true,
+          "_identifier": "textPresence",
+          "_hasMarks": false,
+          "score": 0,
+          "text": "",
+          "marks": []
+        },
+        {
+          "_hasScore": true,
+          "_identifier": "sentenceBeginnings",
+          "_hasMarks": false,
+          "score": 9,
+          "text": "<a href='https://yoa.st/35f' target='_blank'>Consecutive sentences</a>: There is enough variety in your sentences. That's great!",
+          "marks": []
+        }
+      ],
+      "score": 60
+    },
+    "seo": {
+      "": {
+        "results": [
+          {
+            "_hasScore": true,
+            "_identifier": "introductionKeyword",
+            "_hasMarks": false,
+            "score": 9,
+            "text": "<a href='https://yoa.st/33e' target='_blank'>Keyphrase in introduction</a>: Well done!",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "keyphraseLength",
+            "_hasMarks": false,
+            "score": 9,
+            "text": "<a href='https://yoa.st/33i' target='_blank'>Keyphrase length</a>: Good job!",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "keywordDensity",
+            "_hasMarks": true,
+            "score": -50,
+            "text": "<a href='https://yoa.st/33v' target='_blank'>Keyphrase density</a>: The focus keyphrase was found 12 times. That's way more than the recommended maximum of 7 times for a text of this length. <a href='https://yoa.st/33w' target='_blank'>Don't overoptimize</a>!",
+            "marks": [
+              {
+                "_properties": {
+                  "original": "Django SEO optimization",
+                  "marked": "<yoastmark class='yoast-text-mark'>Django SEO optimization</yoastmark>"
+                }
+              },
+              {
+                "_properties": {
+                  "original": "Introduction to Django SEO Optimization",
+                  "marked": "Introduction to <yoastmark class='yoast-text-mark'>Django SEO Optimization</yoastmark>"
+                }
+              },
+              {
+                "_properties": {
+                  "original": "Django SEO optimization is essential if you want your website to rank well in search engines.",
+                  "marked": "<yoastmark class='yoast-text-mark'>Django SEO optimization</yoastmark> is essential if you want your website to rank well in search engines."
+                }
+              },
+              {
+                "_properties": {
+                  "original": "Technical SEO is the backbone of Django SEO optimization.",
+                  "marked": "Technical <yoastmark class='yoast-text-mark'>SEO</yoastmark> is the backbone of <yoastmark class='yoast-text-mark'>Django SEO optimization</yoastmark>."
+                }
+              },
+              {
+                "_properties": {
+                  "original": "Content Optimization for Django SEO",
+                  "marked": "Content <yoastmark class='yoast-text-mark'>Optimization</yoastmark> for <yoastmark class='yoast-text-mark'>Django SEO</yoastmark>"
+                }
+              },
+              {
+                "_properties": {
+                  "original": "Use your focus keyphrase, Django SEO optimization, naturally throughout the content.",
+                  "marked": "Use your focus keyphrase, <yoastmark class='yoast-text-mark'>Django SEO optimization</yoastmark>, naturally throughout the content."
+                }
+              },
+              {
+                "_properties": {
+                  "original": "Django SEO optimization requires a combination of technical improvements and strong content.",
+                  "marked": "<yoastmark class='yoast-text-mark'>Django SEO optimization</yoastmark> requires a combination of technical improvements and strong content."
+                }
+              }
+            ]
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "metaDescriptionLength",
+            "_hasMarks": false,
+            "score": 1,
+            "text": "<a href='https://yoa.st/34d' target='_blank'>Meta description length</a>:  No meta description has been specified. Search engines will display copy from the page instead. <a href='https://yoa.st/34e' target='_blank'>Make sure to write one</a>!",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "subheadingsKeyword",
+            "_hasMarks": false,
+            "score": 9,
+            "text": "<a href='https://yoa.st/33m' target='_blank'>Keyphrase in subheading</a>: 7 of your H2 and H3 subheadings reflect the topic of your copy. Good job!",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "textCompetingLinks",
+            "_hasMarks": false,
+            "score": 0,
+            "text": "",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "textImages",
+            "_hasMarks": false,
+            "score": 3,
+            "text": "<a href='https://yoa.st/33c' target='_blank'>Image alt attributes</a>: No images appear on this page. <a href='https://yoa.st/33d' target='_blank'>Add some</a>!",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "textLength",
+            "_hasMarks": false,
+            "score": 9,
+            "text": "<a href='https://yoa.st/34n' target='_blank'>Text length</a>: The text contains 450 words. Good job!",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "externalLinks",
+            "_hasMarks": false,
+            "score": 9,
+            "text": "<a href='https://yoa.st/34f' target='_blank'>Outbound links</a>: Good job!",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "internalLinks",
+            "_hasMarks": false,
+            "score": 3,
+            "text": "<a href='https://yoa.st/33z' target='_blank'>Internal links</a>: No internal links appear in this page, <a href='https://yoa.st/34a' target='_blank'>make sure to add some</a>!",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "titleWidth",
+            "_hasMarks": false,
+            "score": 1,
+            "text": "<a href='https://yoa.st/34h' target='_blank'>SEO title width</a>: <a href='https://yoa.st/34i' target='_blank'>Please create an SEO title</a>.",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "functionWordsInKeyphrase",
+            "_hasMarks": false,
+            "score": 0,
+            "text": "",
+            "marks": []
+          },
+          {
+            "_hasScore": true,
+            "_identifier": "singleH1",
+            "_hasMarks": true,
+            "score": 1,
+            "text": "<a href='https://yoa.st/3a6' target='_blank'>Single title</a>: H1s should only be used as your main title. Find all H1s in your text that aren't your main title and <a href='https://yoa.st/3a7' target='_blank'>change them to a lower heading level</a>!",
+            "marks": [
+              {
+                "_properties": {
+                  "original": "<h1>How to Optimize a Django Website for SEO</h1>",
+                  "marked": "<h1><yoastmark class='yoast-text-mark'>How to Optimize a Django Website for SEO</yoastmark></h1>"
+                }
+              }
+            ]
+          }
+        ],
+        "score": 3
+      }
+    }
+  },
+  "data": {}
+}

@@ -1,4 +1,5 @@
 import json
+from django.conf import settings
 from django.utils.html import format_html, format_html_join, mark_safe
 from django.templatetags.static import static
 from wagtail import hooks
@@ -16,6 +17,7 @@ def yoast_panel_js():
         'version': context.VERSION,
         'locale': context.LOCALE,
         'staticUrl': context.STATIC_URL,
+        'debug': getattr(settings, 'WY_DEBUG', False),
     })
     suffix = ('?v=%s' % context.VERSION) if context.VERSION else ''
     js_files = [

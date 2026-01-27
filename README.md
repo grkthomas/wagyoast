@@ -231,6 +231,58 @@ Is the Yoast tab necessary?
 - Not strictly; you *could* embed the panel elsewhere.
 - Practically, yes: a dedicated tab keeps analysis UI separate, prevents layout conflicts, and matches the current templates/JS expectation that the panel container exists as `#yoast_panel`.
 
+---
+
+## Hiding specific results
+
+You can hide specific Yoast assessment results by identifier (the `AssessmentResult._identifier` value).
+
+This is configured on the Python side via the `hide_results` argument to `YoastPanel(...)`.
+
+Example (hide `keywordDensity` from the SEO list):
+
+```python
+YoastPanel(
+	keywords="keywords",
+	title="seo_title",
+	search_description="search_description",
+	slug="slug",
+	heading="Yoast",
+	hide_results={
+		"seo": [
+			"keywordDensity",
+		],
+		"readability": [],
+	},
+)
+```
+
+Notes:
+
+- The value is a dict with optional keys: `seo` and `readability`, each containing a list of identifiers to hide.
+- Results are filtered in the UI by `ResultContainers.filterUnwantedResult(...)`.
+- Some identifiers may be hard-filtered regardless (e.g. `singleH1` is currently excluded).
+
+---
+
+## Debug messages are optional
+
+All `console.debug(...)` logging in the Yoast panel JS is gated behind a debug flag.
+
+To enable it, set this in your Django settings:
+
+```python
+WY_DEBUG = True
+```
+
+The flag is passed to the browser as `context.debug` by the editor hook in `wagtailyoast/wagtail_hooks.py`.
+
+To disable debug logs (recommended for production):
+
+```python
+WY_DEBUG = False
+```
+
 ### 4) Run migrations
 
 After changing the model:

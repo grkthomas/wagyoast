@@ -6,9 +6,11 @@
 
     {% comment %} Pass YoastPanel fields to javascript {% endcomment %}
 
-    <div id="yoast_title" data-field="{{ self.title_field }}"></div>
-    <div id="yoast_search_description" data-field="{{ self.search_description }}"></div>
-    <div id="yoast_slug" data-field="{{ self.slug }}"></div>
+    <div id="yoast_title" data-field="{{ self.panel.title_field }}"></div>
+    <div id="yoast_search_description" data-field="{{ self.panel.search_description }}"></div>
+    <div id="yoast_slug" data-field="{{ self.panel.slug }}"></div>
+    <div id="yoast_hide_results" data-field="{{ self.panel.hide_results_json }}"></div>
+    <div id="yoast_debug" data-field="{% if self.panel.debug %}true{% else %}false{% endif %}"></div>
 
     {% comment %} Include results of Yoast {% endcomment %}
 

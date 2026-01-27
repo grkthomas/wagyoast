@@ -39,6 +39,13 @@ class Post(Page):
                 search_description="search_description",
                 slug="slug",
                 heading="Yoast",
+                hide_results={
+                    "seo" : [
+                        # "introductionKeyword",
+                        # "keyphraseLength",
+                        # "keywordDensity",
+                    ]
+                }
             ),
             ObjectList(Page.settings_panels, heading="Settings"),
         ]

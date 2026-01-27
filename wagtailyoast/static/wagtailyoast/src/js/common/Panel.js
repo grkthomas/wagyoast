@@ -26,9 +26,25 @@ export default class Panel extends WithContext {
 
     this._syncDebounced = Panel.debounce(() => this.syncPanel(), 300);
 
-    // Debug
-    // eslint-disable-next-line no-console
-    console.debug('[wagtailyoast] constructed', { workerUrl: this.workerUrl, context: this.context });
+    this.debug = Panel.isDebug(context);
+    console.debug('[wagtailyoast] debug mode is', this.debug);
+
+    if (this.debug) {
+      // eslint-disable-next-line no-console
+      console.debug('[wagtailyoast] constructed', { workerUrl: this.workerUrl, context: this.context });
+    }
+  }
+
+  static isDebug(context = null) {
+    if (context && typeof context === 'object') {
+      if (context.debug === true) return true;
+      if (typeof context.debug === 'string' && context.debug.toLowerCase() === 'true') return true;
+    }
+
+    const el = document.getElementById('yoast_debug');
+    if (!el) return false;
+    const value = el.getAttribute('data-field');
+    return value === 'true';
   }
 
   static debounce(fn, delayMs) {
@@ -88,8 +104,10 @@ export default class Panel extends WithContext {
     if (fromFormAction) return Panel.resolveUrl(fromFormAction);
 
     const inferred = Panel.resolveUrl(Panel.inferPreviewUrlFromLocation());
-    // eslint-disable-next-line no-console
-    console.debug('[wagtailyoast] preview url (inferred)', inferred);
+    if (Panel.isDebug()) {
+      // eslint-disable-next-line no-console
+      console.debug('[wagtailyoast] preview url (inferred)', inferred);
+    }
     return inferred;
   }
 
@@ -108,8 +126,10 @@ export default class Panel extends WithContext {
       throw new Error('wagtailyoast: unable to determine preview URL');
     }
 
-    // eslint-disable-next-line no-console
-    console.debug('[wagtailyoast] refreshing preview', { previewUrl });
+    if (Panel.isDebug()) {
+      // eslint-disable-next-line no-console
+      console.debug('[wagtailyoast] refreshing preview', { previewUrl });
+    }
 
     const csrfToken = Panel.getCookie('csrftoken');
     const headers = csrfToken ? { 'X-CSRFToken': csrfToken } : {};
@@ -130,8 +150,10 @@ export default class Panel extends WithContext {
       headers,
     });
 
-    // eslint-disable-next-line no-console
-    console.debug('[wagtailyoast] fetched preview', { status: response.status });
+    if (Panel.isDebug()) {
+      // eslint-disable-next-line no-console
+      console.debug('[wagtailyoast] fetched preview', { status: response.status });
+    }
     return response.text();
   }
 
@@ -141,8 +163,10 @@ export default class Panel extends WithContext {
    * @returns {void}
    */
   async syncPanel() {
-    // eslint-disable-next-line no-console
-    console.debug('[wagtailyoast] sync start');
+    if (this.debug) {
+      // eslint-disable-next-line no-console
+      console.debug('[wagtailyoast] sync start');
+    }
     const paper = new Paper(await Panel.getPreviewPageContent(), {
       keyword: this.$yoastKeywords?.value || '',
       title: this.$yoastTitle?.value || '',
@@ -152,8 +176,10 @@ export default class Panel extends WithContext {
     });
     const containers = new ResultContainers(await this.worker.analyze(paper));
     containers.sync();
-    // eslint-disable-next-line no-console
-    console.debug('[wagtailyoast] sync done');
+    if (this.debug) {
+      // eslint-disable-next-line no-console
+      console.debug('[wagtailyoast] sync done');
+    }
   }
 
   /**
@@ -162,8 +188,10 @@ export default class Panel extends WithContext {
    * @returns {void}
    */
   init() {
-    // eslint-disable-next-line no-console
-    console.debug('[wagtailyoast] init start');
+    if (this.debug) {
+      // eslint-disable-next-line no-console
+      console.debug('[wagtailyoast] init start');
+    }
     this.worker.initialize({
       locale: this.context.locale,
       contentAnalysisActive: true,
@@ -172,13 +200,17 @@ export default class Panel extends WithContext {
     }).then(() => {
       this.$yoastPanel = document.getElementById('yoast_panel');
       if (!this.$yoastPanel) {
-        // eslint-disable-next-line no-console
-        console.debug('[wagtailyoast] #yoast_panel not found (are you on the Yoast tab / correct page type?)');
+        if (this.debug) {
+          // eslint-disable-next-line no-console
+          console.debug('[wagtailyoast] #yoast_panel not found (are you on the Yoast tab / correct page type?)');
+        }
         return;
       }
 
-      // eslint-disable-next-line no-console
-      console.debug('[wagtailyoast] #yoast_panel found');
+      if (this.debug) {
+        // eslint-disable-next-line no-console
+        console.debug('[wagtailyoast] #yoast_panel found');
+      }
 
       this.$yoastKeywords = this.$yoastPanel.querySelector('#yoast_keywords');
 
@@ -190,16 +222,18 @@ export default class Panel extends WithContext {
       this.$yoastSearchDescription = descField ? document.getElementById(`id_${descField}`) : null;
       this.$yoastSlug = slugField ? document.getElementById(`id_${slugField}`) : null;
 
-      // eslint-disable-next-line no-console
-      console.debug('[wagtailyoast] bound fields', {
-        titleField,
-        descField,
-        slugField,
-        hasKeywords: !!this.$yoastKeywords,
-        hasTitle: !!this.$yoastTitle,
-        hasDescription: !!this.$yoastSearchDescription,
-        hasSlug: !!this.$yoastSlug,
-      });
+      if (this.debug) {
+        // eslint-disable-next-line no-console
+        console.debug('[wagtailyoast] bound fields', {
+          titleField,
+          descField,
+          slugField,
+          hasKeywords: !!this.$yoastKeywords,
+          hasTitle: !!this.$yoastTitle,
+          hasDescription: !!this.$yoastSearchDescription,
+          hasSlug: !!this.$yoastSlug,
+        });
+      }
 
       const inputElements = [
         this.$yoastKeywords,

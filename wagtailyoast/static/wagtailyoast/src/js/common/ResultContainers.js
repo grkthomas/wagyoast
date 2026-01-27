@@ -9,6 +9,33 @@ export default class ResultContainers {
     this.results = results;
     this.readabilityContainer = document.getElementById('yoast_results_readability');
     this.seoContainer = document.getElementById('yoast_results_seo');
+    this.hideResults = ResultContainers.getHideResultsFromDom();
+  }
+
+  static getHideResultsFromDom() {
+    const fallback = { seo: [], readability: [] };
+    const el = document.getElementById('yoast_hide_results');
+    if (!el) return fallback;
+
+    const raw = (el.dataset && el.dataset.field) || el.getAttribute('data-field') || '';
+    if (!raw) return fallback;
+
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      // Defensive fallback in case entities are passed through literally.
+      try {
+        parsed = JSON.parse(raw.replaceAll('&quot;', '"'));
+      } catch {
+        return fallback;
+      }
+    }
+
+    return {
+      seo: Array.isArray(parsed?.seo) ? parsed.seo : [],
+      readability: Array.isArray(parsed?.readability) ? parsed.readability : [],
+    };
   }
 
   /**
@@ -104,10 +131,11 @@ export default class ResultContainers {
    * @param {AssessmentResult} result Assessment result of yoastseo module
    * @return {object}
    */
-  static filterUnwantedResult(result) {
+  static filterUnwantedResult(result, hiddenIdentifiers = []) {
     // FIXME: singleH1 does not work, fix it with Yoast
     const unwanted = [
       'singleH1',
+      ...hiddenIdentifiers,
     ];
     // eslint-disable-next-line no-underscore-dangle
     return unwanted.indexOf(result._identifier) === -1;
@@ -120,8 +148,8 @@ export default class ResultContainers {
    * @param {AssessmentResult} result Assessment result of yoastseo module
    * @return {void}
    */
-  static addResult(container, result) {
-    if (result.score !== 0 && ResultContainers.filterUnwantedResult(result)) {
+  static addResult(container, result, hiddenIdentifiers = []) {
+    if (result.score !== 0 && ResultContainers.filterUnwantedResult(result, hiddenIdentifiers)) {
       const statusContainer = ResultContainers.getStatusContainer(container, result);
       if (!statusContainer) return;
       const item = document.createElement('li');
@@ -144,10 +172,10 @@ export default class ResultContainers {
 
     // Append Data
     Array.prototype.forEach.call(this.results.result.readability.results, (el) => {
-      ResultContainers.addResult(this.readabilityContainer, el);
+      ResultContainers.addResult(this.readabilityContainer, el, this.hideResults.readability);
     });
     Array.prototype.forEach.call(this.results.result.seo[''].results, (el) => {
-      ResultContainers.addResult(this.seoContainer, el);
+      ResultContainers.addResult(this.seoContainer, el, this.hideResults.seo);
     });
   }
 }

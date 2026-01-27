@@ -167,6 +167,7 @@ WAGTAIL_SITE_NAME = "wagyoast"
 # wagtailyoast settings
 # Locale code used by Yoast analysis (e.g. "en_US", "fr_FR").
 WY_LOCALE = "en_US"
+WY_DEBUG = True
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
