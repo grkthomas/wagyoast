@@ -70,6 +70,8 @@ The Yoast analysis runs in the browser, so we bundle JavaScript assets for the W
 - Runtime: `yoastseo`
 - Dev/build: `esbuild`, `sass`, `@esbuild-plugins/node-globals-polyfill`, `@esbuild-plugins/node-modules-polyfill`
 
+This repo also uses an npm `overrides` entry to pin a compatible `mode-sass` version for repeatable installs.
+
 Important: **Node is only required to (re)build these assets.** For a “copy/paste into any Wagtail project” workflow, commit/copy the generated `wagtailyoast/static/wagtailyoast/dist/` files and you do not need `node_modules` at runtime.
 
 Install + build:
@@ -263,6 +265,59 @@ Notes:
 - Results are filtered in the UI by `ResultContainers.filterUnwantedResult(...)`.
 - Some identifiers may be hard-filtered regardless (e.g. `singleH1` is currently excluded).
 
+### Valid identifiers (Python-side validation)
+
+`YoastPanel` now validates `hide_results` identifiers on the server side.
+
+- Non-string values are ignored.
+- Unknown identifiers are ignored.
+- Warnings are logged via Python logging (logger name: `wagtailyoast.edit_handlers`).
+
+The allowed identifier lists are defined in:
+
+- `wagtailyoast/identifiers.py` (`SEO_IDENTIFIERS`, `READABILITY_IDENTIFIERS`)
+
+`hide_results` can be passed as either a Python dict (recommended) or a JSON string.
+
+---
+
+## Hiding the “Focus keyphrase” field (optional)
+
+If you want Yoast keyword analysis enabled but you do not want editors to see (or edit) the “Focus keyphrase” field in the Promote tab, you can hide it using the `keywords_hidden` flag.
+
+Behavior:
+
+- `keywords_hidden=False` (default): shows the editable “Focus keyphrase” input.
+- `keywords_hidden=True`: renders the keywords field as a hidden input in the Yoast panel and skips adding the `FieldPanel("keywords")` to Promote.
+
+Example pattern (as used in this repo’s `Post` model):
+
+```python
+keywords_hidden = True
+
+if keywords_hidden is True:
+	promote_panels = Page.promote_panels
+else:
+	promote_panels = Page.promote_panels + [
+		FieldPanel("keywords"),
+	]
+
+edit_handler = TabbedInterface(
+	[
+		# ...
+		YoastPanel(
+			keywords="keywords",
+			title="seo_title",
+			search_description="search_description",
+			slug="slug",
+			heading="Yoast",
+			keywords_hidden=keywords_hidden,
+		),
+		# ...
+	]
+)
+```
+
 ---
 
 ## Debug messages are optional
@@ -282,6 +337,17 @@ To disable debug logs (recommended for production):
 ```python
 WY_DEBUG = False
 ```
+
+---
+
+## Static asset cache-busting (dev-friendly)
+
+The editor hook appends a `?v=...` suffix to Yoast CSS/JS URLs.
+
+- In development (`DEBUG=True`) or when `WY_DEBUG=True`, the suffix is based on the static file mtime (so rebuilding assets is picked up without manual cache clearing).
+- Otherwise, the suffix falls back to the installed package version (when available).
+
+This logic lives in `wagtailyoast/wagtail_hooks.py`.
 
 ### 4) Run migrations
 

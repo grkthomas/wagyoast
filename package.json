@@ -12,6 +12,9 @@
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "sass": "^1.74.1"
   },
+  "overrides": {
+    "mode-sass": "^9.0.0"
+  },
   "scripts": {
     "build:yoast": "node ./wagtailyoast/build/build-yoast.mjs"
   }

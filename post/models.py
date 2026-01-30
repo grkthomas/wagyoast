@@ -9,25 +9,31 @@ from wagtailyoast.edit_handlers import YoastPanel
 
 
 class Post(Page):
+
     parent_page_types = ["home.HomePage"]
 
     body = models.TextField(
         blank=True,
         help_text="Raw HTML body (e.g. <h2>, <p>).",
     )
+    content_panels = Page.content_panels + [
+        FieldPanel("body", widget=forms.Textarea(attrs={"rows": 18})),
+    ]
+
+    # This is the reccommended way to use the flag 'keywords_hidden' with the mandatory (for the YoastPanel) field 'keywords'.
+    keywords_hidden = False
     keywords = models.CharField(
         max_length=255,
         blank=True,
         help_text="Focus keyphrase used for SEO analysis.",
     )
+    if keywords_hidden is True:
+        promote_panels = Page.promote_panels
+    else:
+        promote_panels = Page.promote_panels + [
+            FieldPanel("keywords"),
+        ]
 
-    content_panels = Page.content_panels + [
-        FieldPanel("body", widget=forms.Textarea(attrs={"rows": 18})),
-    ]
-
-    promote_panels = Page.promote_panels + [
-        FieldPanel("keywords"),
-    ]
 
     edit_handler = TabbedInterface(
         [
@@ -41,11 +47,12 @@ class Post(Page):
                 heading="Yoast",
                 hide_results={
                     "seo" : [
-                        # "introductionKeyword",
-                        # "keyphraseLength",
+                        "introductionKeyword",
+                        # "keyphraseLength9",
                         # "keywordDensity",
                     ]
-                }
+                },
+                keywords_hidden=keywords_hidden
             ),
             ObjectList(Page.settings_panels, heading="Settings"),
         ]

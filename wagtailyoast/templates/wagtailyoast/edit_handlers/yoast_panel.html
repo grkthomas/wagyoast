@@ -2,7 +2,16 @@
 
     {% comment %} Panel Form {% endcomment %}
 
-    {% include 'wagtailadmin/panels/object_list.html' %}
+    {% if self.panel.keywords_hidden %}
+        <div class="w-form-width w-field__wrapper">
+            <h2 class="w-panel__heading w-panel__heading--label">
+                <span data-panel-heading-text=""> Evaluation comments </span>
+            </h2>
+        {{ self.keywords_field }}
+        </div>
+    {% else %}
+        {% include 'wagtailadmin/panels/object_list.html' %}
+    {% endif %}
 
     {% comment %} Pass YoastPanel fields to javascript {% endcomment %}
 
