@@ -13,7 +13,7 @@
     "sass": "^1.74.1"
   },
   "overrides": {
-    "mode-sass": "^9.0.0"
+    "node-sass": "^9.0.0"
   },
   "scripts": {
     "build:yoast": "node ./wagtailyoast/build/build-yoast.mjs"
