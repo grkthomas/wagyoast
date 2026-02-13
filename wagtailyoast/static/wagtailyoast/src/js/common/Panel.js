@@ -221,6 +221,8 @@ export default class Panel extends WithContext {
       this.$yoastTitle = titleField ? document.getElementById(`id_${titleField}`) : null;
       this.$yoastSearchDescription = descField ? document.getElementById(`id_${descField}`) : null;
       this.$yoastSlug = slugField ? document.getElementById(`id_${slugField}`) : null;
+      this.$yoastBody = document.getElementById('id_body')
+        || document.querySelector('textarea[name="body"], input[name="body"]');
 
       if (this.debug) {
         // eslint-disable-next-line no-console
@@ -232,6 +234,8 @@ export default class Panel extends WithContext {
           hasTitle: !!this.$yoastTitle,
           hasDescription: !!this.$yoastSearchDescription,
           hasSlug: !!this.$yoastSlug,
+          hasBody: !!this.$yoastBody,
+          bodyPreview: (this.$yoastBody?.value || '').slice(0, 100),
         });
       }
 
@@ -240,6 +244,7 @@ export default class Panel extends WithContext {
         this.$yoastTitle,
         this.$yoastSearchDescription,
         this.$yoastSlug,
+        this.$yoastBody,
       ].filter(Boolean);
 
       inputElements.forEach(($el) => {
