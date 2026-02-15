@@ -22,7 +22,9 @@
     <div id="yoast_debug" data-field="{% if self.panel.debug %}true{% else %}false{% endif %}"></div>
 
     {% comment %} Include results of Yoast {% endcomment %}
-
+    <div class="yoast_curtom_buttions">
+        <button id="yoast_recalculate" type="button" class="button button-small button-secondary">Recalculate</button>
+    </div>
     <div id="yoast_results" class="yoast-results">
         {% include 'wagtailyoast/edit_handlers/yoast_list.html' with list_title="SEO" list_id="results_seo" %}
         {% include 'wagtailyoast/edit_handlers/yoast_list.html' with list_title="Readability" list_id="results_readability" %}

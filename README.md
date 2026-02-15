@@ -207,6 +207,31 @@ class Post(Page):
 	]
 ```
 
+### Optional: use Draftail for `body`
+
+`wagtailyoast` also works when your `body` field is edited with Draftail.
+
+Install frontend packages (optional, only if you want Draftail):
+
+```bash
+npm install --save draftail draft-js@0.10.5 react react-dom
+```
+
+Then wire the `body` panel to Draftail:
+
+```python
+from wagtail.admin.rich_text import DraftailRichTextArea
+
+class Post(Page):
+	body = models.TextField(blank=True)
+
+	content_panels = Page.content_panels + [
+		FieldPanel("body", widget=DraftailRichTextArea),
+	]
+```
+
+This is optional; plain `FieldPanel("body")` also works.
+
 ### 3) Add the “Yoast” tab (recommended and used here)
 
 This project uses a dedicated editor tab because it provides the best UX and it matches how Yoast panels are typically shown.

@@ -182,6 +182,31 @@ export default class Panel extends WithContext {
     }
   }
 
+  bindBodyEvents() {
+    if (this.$yoastBody) {
+      ['input', 'change'].forEach((eventName) => {
+        this.$yoastBody.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          this._syncDebounced();
+        });
+      });
+    }
+
+    const bodyField = this.$yoastBody?.closest('.w-field, [data-field]') || document;
+    const draftailEditable = bodyField.querySelector('.public-DraftEditor-content[contenteditable="true"]');
+
+    if (!draftailEditable) {
+      return;
+    }
+
+    ['input', 'keyup', 'paste', 'cut'].forEach((eventName) => {
+      draftailEditable.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        this._syncDebounced();
+      });
+    });
+  }
+
   /**
    * Initialize worker and events
    *
@@ -244,8 +269,9 @@ export default class Panel extends WithContext {
         this.$yoastTitle,
         this.$yoastSearchDescription,
         this.$yoastSlug,
-        this.$yoastBody,
       ].filter(Boolean);
+
+      this.$yoastRecalculate = this.$yoastPanel.querySelector('#yoast_recalculate');
 
       inputElements.forEach(($el) => {
         $el.addEventListener('input', (e) => {
@@ -253,6 +279,15 @@ export default class Panel extends WithContext {
           this._syncDebounced();
         });
       });
+
+      this.bindBodyEvents();
+
+      if (this.$yoastRecalculate) {
+        this.$yoastRecalculate.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.syncPanel();
+        });
+      }
 
       // Also refresh when the Yoast tab/panel becomes active.
       document.addEventListener('click', (e) => {
