@@ -55,8 +55,8 @@ class Post(Page):
                 },
                 keywords_hidden=keywords_hidden,
                 inner_urls=[
-                    "https://www.hfeu.com",
-                    "https://www.hfm.com",
+                    "https://www.actualsite.com/",
+                    "https://cdn.actualsite.com/",
                 ],
             ),
             ObjectList(Page.settings_panels, heading="Settings"),
