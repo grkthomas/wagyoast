@@ -53,7 +53,11 @@ class Post(Page):
                         # "keywordDensity",
                     ]
                 },
-                keywords_hidden=keywords_hidden
+                keywords_hidden=keywords_hidden,
+                inner_urls=[
+                    "https://www.hfeu.com",
+                    "https://www.hfm.com",
+                ],
             ),
             ObjectList(Page.settings_panels, heading="Settings"),
         ]

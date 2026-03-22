@@ -1,5 +1,6 @@
 import json
 import logging
+from urllib.parse import urlsplit, urlunsplit
 
 from django.conf import settings
 from django import forms
@@ -44,6 +45,42 @@ def _filter_hide_results_identifiers(section_name, values, allowed_set):
         filtered.append(item)
     return filtered
 
+
+def _normalize_inner_url(value):
+    if not value:
+        return ""
+
+    if not isinstance(value, str):
+        logger.warning("YoastPanel: ignoring non-string inner_url value %r", value)
+        return ""
+
+    candidate = value.strip()
+    if not candidate:
+        return ""
+
+    parsed = urlsplit(candidate)
+    if not parsed.scheme or not parsed.netloc:
+        logger.warning(
+            "YoastPanel: inner_url must be an absolute URL, got %r",
+            value,
+        )
+        return ""
+
+    normalized_path = parsed.path or "/"
+    return urlunsplit((parsed.scheme, parsed.netloc, normalized_path, "", ""))
+
+
+def _normalize_inner_urls(value):
+    normalized_urls = []
+
+    for item in _normalize_hide_results_list(value):
+        normalized_url = _normalize_inner_url(item)
+        if not normalized_url or normalized_url in normalized_urls:
+            continue
+        normalized_urls.append(normalized_url)
+
+    return normalized_urls
+
 class YoastPanel(ObjectList):
     class BoundPanel(ObjectList.BoundPanel):
         template_name = "wagtailyoast/edit_handlers/yoast_panel.html"
@@ -64,6 +101,7 @@ class YoastPanel(ObjectList):
         heading="Yoast",
         hide_results=None,
         keywords_hidden=False,
+        inner_urls=None,
         *args,
         **kwargs,
     ):
@@ -83,6 +121,8 @@ class YoastPanel(ObjectList):
         self.search_description = search_description
         self.slug = slug
         self.keywords_hidden = keywords_hidden
+        self.inner_urls = _normalize_inner_urls(inner_urls)
+        self.inner_urls_json = json.dumps(self.inner_urls)
 
         # Normalize hide_results into a dict like:
         # {"seo": ["keywordDensity"], "readability": ["passiveVoice", ...]}
@@ -148,4 +188,5 @@ class YoastPanel(ObjectList):
         kwargs['slug'] = self.slug
         kwargs['hide_results'] = self.hide_results_json
         kwargs['keywords_hidden'] = self.keywords_hidden
+        kwargs['inner_urls'] = self.inner_urls
         return kwargs

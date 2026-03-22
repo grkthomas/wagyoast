@@ -75,6 +75,86 @@ export default class Panel extends WithContext {
     }
   }
 
+  static normalizeInnerUrl(value) {
+    const resolved = Panel.resolveUrl(value);
+    if (!resolved) return null;
+
+    try {
+      const url = new URL(resolved);
+      url.search = '';
+      url.hash = '';
+      if (!url.pathname) {
+        url.pathname = '/';
+      }
+      return url;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static parseInnerUrlsField() {
+    const configured = document.getElementById('yoast_inner_urls')?.dataset?.field;
+    if (!configured) {
+      return [];
+    }
+
+    try {
+      const parsed = JSON.parse(configured);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  static getInnerBaseUrls() {
+    const configured = Panel.parseInnerUrlsField();
+    const normalizedUrls = [];
+
+    configured.forEach((candidate) => {
+      const normalizedUrl = Panel.normalizeInnerUrl(candidate);
+      if (!normalizedUrl) return;
+
+      const normalizedHref = normalizedUrl.toString();
+      if (normalizedUrls.some((url) => url.toString() === normalizedHref)) {
+        return;
+      }
+
+      normalizedUrls.push(normalizedUrl);
+    });
+
+    return normalizedUrls.length > 0 ? normalizedUrls : [new URL(window.location.origin)];
+  }
+
+  static getPrimaryInnerBaseUrl(innerBaseUrls = Panel.getInnerBaseUrls()) {
+    return innerBaseUrls[0] || new URL(window.location.origin);
+  }
+
+  async syncWorkerConfiguration(innerBaseUrls = Panel.getInnerBaseUrls()) {
+    await this.worker.sendMessage(
+      'setInnerUrls',
+      { innerUrls: innerBaseUrls.map((url) => url.toString()) },
+      'wagtailyoast',
+    );
+  }
+
+  static buildPermalink(innerBaseUrl, slug) {
+    const baseUrl = innerBaseUrl instanceof URL
+      ? new URL(innerBaseUrl.toString())
+      : Panel.getPrimaryInnerBaseUrl();
+    // Normalize only the current page slug before building Paper.permalink on the primary inner host.
+    const normalizedSlug = (slug || '').trim().replace(/^\/+|\/+$/g, '');
+
+    if (!baseUrl.pathname.endsWith('/')) {
+      baseUrl.pathname = `${baseUrl.pathname}/`;
+    }
+
+    if (!normalizedSlug) {
+      return baseUrl.toString();
+    }
+
+    return new URL(`${normalizedSlug}/`, baseUrl).toString();
+  }
+
   static inferPreviewUrlFromLocation() {
     const path = window.location.pathname;
     if (/\/edit\/?$/.test(path)) {
@@ -167,11 +247,16 @@ export default class Panel extends WithContext {
       // eslint-disable-next-line no-console
       console.debug('[wagtailyoast] sync start');
     }
+    const innerBaseUrls = Panel.getInnerBaseUrls();
+    const primaryInnerBaseUrl = Panel.getPrimaryInnerBaseUrl(innerBaseUrls);
+    const slug = this.$yoastSlug?.value || '';
+    await this.syncWorkerConfiguration(innerBaseUrls);
     const paper = new Paper(await Panel.getPreviewPageContent(), {
       keyword: this.$yoastKeywords?.value || '',
       title: this.$yoastTitle?.value || '',
       description: this.$yoastSearchDescription?.value || '',
-      slug: this.$yoastSlug?.value || '',
+      url: slug,
+      permalink: Panel.buildPermalink(primaryInnerBaseUrl, slug),
       titleWidth: 500, // FIXME: How to get width of title in pixel? https://github.com/Yoast/javascript/blob/master/packages/yoastseo/src/values/Paper.js#L29
     });
     const containers = new ResultContainers(await this.worker.analyze(paper));

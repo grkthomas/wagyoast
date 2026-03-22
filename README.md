@@ -246,12 +246,18 @@ edit_handler = TabbedInterface(
 			title="seo_title",
 			search_description="search_description",
 			slug="slug",
+			inner_urls=[
+				"https://www.actualsite.com/",
+				"https://cdn.actualsite.com/",
+			],
 			heading="Yoast",
 		),
 		ObjectList(Page.settings_panels, heading="Settings"),
 	]
 )
 ```
+
+`inner_urls` is optional. When set, `wagtailyoast` treats absolute links on any of those hosts as internal during Yoast SEO analysis, even when the Wagtail admin is running on a different domain. The first URL in the list is used as the primary base URL when building the article permalink passed into Yoast.
 
 Is the Yoast tab necessary?
 
